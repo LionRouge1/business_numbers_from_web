@@ -1,0 +1,6 @@
+.venv/
+venv/
+
+# Ignore other common files
+*.pyc
+__pycache__/
