@@ -52,18 +52,10 @@ class GetBusinessData:
           "Availability": business["availability"]
         })
 
-  def safe_find_text(self, element, selector, default="N/A"):
-    """Safely extract text from an element with error handling"""
-    try:
-        return element.find_elements(By.CSS_SELECTOR, selector)[0].text.strip()
-    except:
-        # print(f"Could not find element with Item {element} and selector {selector}")
-        return default
-
   def get_business_data(self, card, index):
     for _ in range(3):  # Retry up to 3 times
       try:
-          name = self.safe_find_text(card, ".rgnuSb.xYjf2e")
+          name = card.find_element(By.CSS_SELECTOR, ".rgnuSb.xYjf2e").text.strip()
           info = card.find_elements(By.CSS_SELECTOR, ".I9iumb:nth-of-type(3) > span")
               
           business = {
@@ -132,33 +124,3 @@ class GetBusinessData:
 
 if __name__ == "__main__":
   GetBusinessData().run()
-
-
-# while True:
-#   try:
-#     WebDriverWait(self.driver, 10).until(
-#       EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".ykYNg > div[jscontroller]"))
-#     )
-#     cards = self.driver.find_elements(By.CSS_SELECTOR, ".ykYNg > div[jscontroller]")
-
-#     for card in cards:
-#       business = self.get_business_data(card)
-#       if business:
-#         businesses.append(business)
-    
-#     btn_next = WebDriverWait(driver, 10).until(
-#       EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='Next']"))
-#     )
-#     btn_next.click()
-#     WebDriverWait(driver, 10).until(
-#       EC.staleness_of(cards[0])
-#     )
-#   except (NoSuchElementException, TimeoutException):
-#     print("No more pages to navigate.")
-#     break
-#   except Exception as e:
-#     print('Error:', e)
-#     break
-
-# print(businesses)
-# driver.quit()

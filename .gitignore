@@ -4,3 +4,4 @@ venv/
 # Ignore other common files
 *.pyc
 __pycache__/
+businesses_*.csv
