@@ -3,7 +3,8 @@ from get_numbers import GetBusinessData
 class App:
   def __init__(self):
     self.user_name = input("Enter your name: ")
-    self.filename = f"{self.user_name}_businesses.csv"
+    self.filename = f"{self.user_name.lower()}_businesses.csv"
+    self.scraper = GetBusinessData(self.filename)
     if self.user_name.strip():
       self.run()
     else:
@@ -28,7 +29,7 @@ class App:
           if not query.strip():
             print("Query cannot be empty. Please try again.")
             continue
-          scraper = GetBusinessData(self.filename).search_for_businesses(query)
+          self.scraper.search_for_businesses(query)
           # break
         elif choice == 2:
           print("Exiting...")
