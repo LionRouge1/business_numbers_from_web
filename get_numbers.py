@@ -1,29 +1,27 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, NoSuchElementException
 import time
-import re
+# import re
 from pathlib import Path
 import csv
 
 class GetBusinessData:
   def __init__(self):
     # self.driver = webdriver.Chrome()
-    self.chrome_options = Options()
-    self.chrome_options.add_argument("--headless=new")  # New headless mode in Chrome 109+
-    self.chrome_options.add_argument("--disable-gpu")  # GPU acceleration isn't needed
-    self.chrome_options.add_argument("--window-size=1920,1080")  # Set window size
-
-    # Initialize driver
+    # self.chrome_options = Options()
+    # self.chrome_options.add_argument("--headless=new")
+    # self.chrome_options.add_argument("--disable-gpu")
+    # self.chrome_options.add_argument("--window-size=1920,1080")
     self.driver = webdriver.Chrome()
     self.businesses = {}
     self.CHUNK_SIZE = 50
     self.timestamp = time.strftime("%Y%m%d")
     self.filename = f"businesses_{self.timestamp}.csv"
-    self.driver.get("https://www.google.com/localservices/prolist?g2lbs=AAEPWCtmCa0U69yT4gyIoz1-hE1uART3Y_k2-yqhQwXwSWd3Fou0NCljJb8MwaVVAeWbYryuXWnD5ZXf68m1l2qfyARWV9Di3A%3D%3D&hl=en-GH&gl=gh&cs=1&ssta=1&q=gyms%20near%20me&oq=gyms%20near%20me&slp=MgBSAggCYACSAakCCg0vZy8xMWNzMXd3dzdzCg0vZy8xMWdfeDA0bXZwCg0vZy8xMWh6XzU2ajJ4Cg0vZy8xMWdobmJtbjRzCg0vZy8xMWxrMHR5cTYxCg0vZy8xMXZqX2syMnpmCg0vZy8xMXQ3dnYxZjVwCgsvZy8xdHMzZ3pzNgoNL2cvMTFsMnhfd3NuMgoNL2cvMTF2OXl6MTlwMAoNL2cvMTFiejA4cGJ6OQoNL2cvMTFmeGR0dF84bAoNL2cvMTFjNl9kdzhyeQoNL2cvMTFiNnA3bGdsYgoNL2cvMTFobjZmODAwdwoNL2cvMTF2OXk0amZ0dwoNL2cvMTFuczM5M3psNgoNL2cvMTFzMjI2cHc3MQoNL2cvMTFqNHZtdmcxbgoML2cvMXB0dzl6X25jmgEGCgIXGRAA&src=2&serdesk=1&sa=X&sqi=2&ved=2ahUKEwj7y_2w96KMAxV10AIHHbqcGdsQjGp6BAgrEAE&scp=CghnY2lkOmd5bRJWEhIJQwTRApiZ3w8Rxi_wGbDLoAEaEglzp7eyhJDfDxHTLQ5l2E7RviIUT2thaWtvaSBTb3V0aCwgQWNjcmEqFA0y2U8DFUQU1_8dchlbAyWhyN7_MAEaBGd5bXMiDGd5bXMgbmVhciBtZSoDR3lt")
+    self.driver.get("https://www.google.com/localservices/prolist?g2lbs=AAEPWCtmCa0U69yT4gyIoz1-hE1uART3Y_k2-yqhQwXwSWd3Fou0NCljJb8MwaVVAeWbYryuXWnD5ZXf68m1l2qfyARWV9Di3A%3D%3D&hl=en-GH&gl=gh&cs=1&ssta=1&slp=MgBSAggCYACSAakCCg0vZy8xMWNzMXd3dzdzCg0vZy8xMWdfeDA0bXZwCg0vZy8xMWh6XzU2ajJ4Cg0vZy8xMWdobmJtbjRzCg0vZy8xMWxrMHR5cTYxCg0vZy8xMXZqX2syMnpmCg0vZy8xMXQ3dnYxZjVwCgsvZy8xdHMzZ3pzNgoNL2cvMTFsMnhfd3NuMgoNL2cvMTF2OXl6MTlwMAoNL2cvMTFiejA4cGJ6OQoNL2cvMTFmeGR0dF84bAoNL2cvMTFjNl9kdzhyeQoNL2cvMTFiNnA3bGdsYgoNL2cvMTFobjZmODAwdwoNL2cvMTF2OXk0amZ0dwoNL2cvMTFuczM5M3psNgoNL2cvMTFzMjI2cHc3MQoNL2cvMTFqNHZtdmcxbgoML2cvMXB0dzl6X25jmgEGCgIXGRAA&src=2&serdesk=1&sa=X&sqi=2&ved=2ahUKEwj7y_2w96KMAxV10AIHHbqcGdsQjGp6BAgrEAE&lci=20&scp=CghnY2lkOmd5bRJWEhIJQwTRApiZ3w8Rxi_wGbDLoAEaEglzp7eyhJDfDxHTLQ5l2E7RviIUT2thaWtvaSBTb3V0aCwgQWNjcmEqFA0y2U8DFUQU1_8dchlbAyWhyN7_MAEaBGd5bXMiDGd5bXMgbmVhciBtZSoDR3lt")
 
   def _is_phone_number(self, s):
     return s.replace(" ", "").isdigit()
@@ -35,7 +33,21 @@ class GetBusinessData:
         return True
     return False
   
+  def search_for_businesses(self):
+    try:
+      search_form = WebDriverWait(self.driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "form[jsname='jZGSjc']"))
+      )
+      search_input = search_form.find_element(By.CSS_SELECTOR, "input[name='q']")
+      search_input.send_keys("gyms near me")
+      search_form.submit()
+      self.run()
+    except Exception as e:
+      print("Error:", e)
+      self.driver.quit()
+  
   def write_to_csv(self):
+    print("Writing to CSV...")
     file_exists = Path(self.filename).exists()
     with open(self.filename, "a", newline="", encoding='utf-8') as csvfile:
       fieldnames = ["Name", "Address", "Phone", "Availability"]
@@ -53,7 +65,7 @@ class GetBusinessData:
         })
 
   def get_business_data(self, card, index):
-    for _ in range(3):  # Retry up to 3 times
+    for _ in range(3):
       try:
           name = card.find_element(By.CSS_SELECTOR, ".rgnuSb.xYjf2e").text.strip()
           info = card.find_elements(By.CSS_SELECTOR, ".I9iumb:nth-of-type(3) > span")
@@ -76,7 +88,10 @@ class GetBusinessData:
               
           return business
       except StaleElementReferenceException:
-        cards = WebDriverWait(self.driver, 5).until(
+        print("Stale element. Retrying...")
+        self.driver.refresh()
+        time.sleep(5)
+        cards = WebDriverWait(self.driver, 10).until(
           EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".ykYNg > div[jscontroller]"))
         )
         card = cards[index]
@@ -84,6 +99,7 @@ class GetBusinessData:
     return None
 
   def run(self):
+    print("Scraping...")
     while True:
       try:
         WebDriverWait(self.driver, 10).until(
@@ -99,7 +115,6 @@ class GetBusinessData:
             self.businesses[key] = business
         
         if len(self.businesses) >= self.CHUNK_SIZE:
-          print("Writing to CSV...")
           self.write_to_csv()
           self.businesses = {}
         
@@ -111,16 +126,21 @@ class GetBusinessData:
           EC.staleness_of(cards[0])
         )
 
+        # time.sleep(5)
+
       except (NoSuchElementException, TimeoutException):
+        print("End of search results.")
         self.write_to_csv()
+        self.driver.quit()
         break
       except Exception as e:
         self.write_to_csv()
         print('Error:', e)
+        # self.driver.quit()
         break
 
     self.driver.quit()
 
 
 if __name__ == "__main__":
-  GetBusinessData().run()
+  GetBusinessData().search_for_businesses()
