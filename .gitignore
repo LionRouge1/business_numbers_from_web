@@ -5,3 +5,9 @@ venv/
 *.pyc
 __pycache__/
 businesses_*.csv
+*.csv
+*.log
+*.sqlite3
+*.db
+*.sqlite
+*.sql
