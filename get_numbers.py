@@ -17,7 +17,8 @@ class GetBusinessData:
     # self.chrome_options.add_argument("--disable-gpu")
     # self.chrome_options.add_argument("--window-size=1920,1080")
     self.driver = webdriver.Chrome()
-    self.businesses = {}
+    self.businesses = []
+    self.unique_businesses = set()
     self.CHUNK_SIZE = 50
     self.timestamp = time.strftime("%Y%m%d")
     self.filename = f"businesses_{self.timestamp}.csv"
@@ -33,13 +34,13 @@ class GetBusinessData:
         return True
     return False
   
-  def search_for_businesses(self):
+  def search_for_businesses(self, keys=None):
     try:
       search_form = WebDriverWait(self.driver, 10).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "form[jsname='jZGSjc']"))
       )
       search_input = search_form.find_element(By.CSS_SELECTOR, "input[name='q']")
-      search_input.send_keys("gyms near me")
+      search_input.send_keys(keys)
       search_form.submit()
       self.run()
     except Exception as e:
@@ -111,12 +112,13 @@ class GetBusinessData:
           business = self.get_business_data(cards[i], i)
           phone = business["phone"].replace(" ", "")
           key = f"{business['name']} - {phone}"
-          if key not in self.businesses:
-            self.businesses[key] = business
+          if key not in self.unique_businesses:
+            self.unique_businesses.add(key)
+            self.businesses.append(business)
         
         if len(self.businesses) >= self.CHUNK_SIZE:
           self.write_to_csv()
-          self.businesses = {}
+          self.businesses = []
         
         btn_next = WebDriverWait(self.driver, 10).until(
           EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='Next']"))
@@ -143,4 +145,4 @@ class GetBusinessData:
 
 
 if __name__ == "__main__":
-  GetBusinessData().search_for_businesses()
+  GetBusinessData().search_for_businesses("gyms near me")
