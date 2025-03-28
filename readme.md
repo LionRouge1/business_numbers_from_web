@@ -28,9 +28,9 @@ The **Business Finder App** is a Python-based application designed to help users
 
 1. **Install Dependencies**:
    - Ensure you have Python installed.
-   - Install required libraries using pip:
+   - Install required libraries using the `requirements.txt` file:
      ```sh
-     pip install selenium colorama
+     pip install -r requirements.txt
      ```
 
 2. **Run the App**:
@@ -52,6 +52,10 @@ The **Business Finder App** is a Python-based application designed to help users
 - Selenium
 - Colorama
 - Google Chrome and ChromeDriver (for web scraping)
+- Install all dependencies using the [requirements.txt](http://_vscodecontentref_/1) file:
+  ```sh
+  pip install -r requirements.txt
+  ```
 
 ## Notes
 
