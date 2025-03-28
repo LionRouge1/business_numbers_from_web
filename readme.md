@@ -66,7 +66,7 @@ The **Business Finder App** is a Python-based application designed to help users
 
 - **Matchoudi Avlessi**
   - Email: matchoudiavlessi@gmail.com
-  - GitHub: [github](https://github.com/matchoudi)
+  - GitHub: [github](https://github.com/LionRouge1)
   - LinkedIn: [linkedin](https://linkedin.com/in/matchoudi)
 
 ## License
