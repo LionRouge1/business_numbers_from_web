@@ -62,6 +62,13 @@ The **Business Finder App** is a Python-based application designed to help users
 - Ensure the ChromeDriver version matches your installed Google Chrome version.
 - The [.gitignore](http://_vscodecontentref_/7) file is configured to ignore temporary files, cache, and CSV files generated during runtime.
 
+## Author
+
+- **Matchoudi Avlessi**
+  - Email: matchoudiavlessi@gmail.com
+  - GitHub: [github](https://github.com/matchoudi)
+  - LinkedIn: [linkedin](https://linkedin.com/in/matchoudi)
+
 ## License
 
 This project is licensed under the MIT License.
