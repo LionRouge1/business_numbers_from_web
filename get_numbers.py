@@ -73,38 +73,41 @@ class GetBusinessData:
         })
 
   def get_business_data(self, card, index):
-    for _ in range(3):
-      try:
-          name = card.find_element(By.CSS_SELECTOR, ".rgnuSb.xYjf2e").text.strip()
-          info = card.find_elements(By.CSS_SELECTOR, ".I9iumb:nth-of-type(3) > span")
-              
-          business = {
-            "name": name,
-            "address": "N/A",
-            "phone": "N/A",
-            "availability": "N/A",
-            "industry": self.industry
-          }
-              
-          for element in info:
-            text = element.text
-            if self._is_phone_number(text):
-              business["phone"] = text
-            elif self._is_availability(text):
-              business["availability"] = text
-            else:
-              business["address"] = text
-              
-          return business
-      except StaleElementReferenceException:
-        print("Stale element. Retrying...")
-        self.driver.refresh()
-        time.sleep(10)
-        self.cards = WebDriverWait(self.driver, 10).until(
-          EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".ykYNg > div[jscontroller]"))
-        )
-        card = self.cards[index]
-        continue
+    if not card.find_elements(By.XPATH, ".//button[.//span[normalize-space(text())='Website']]"):
+      for _ in range(3):
+        if card.find_elements(By.XPATH, ".//button[.//span[normalize-space(text())='Website']]"):
+          return None
+        try:
+            name = card.find_element(By.CSS_SELECTOR, ".rgnuSb.xYjf2e").text.strip()
+            info = card.find_elements(By.CSS_SELECTOR, ".I9iumb:nth-of-type(3) > span")
+                
+            business = {
+              "name": name,
+              "address": "N/A",
+              "phone": "N/A",
+              "availability": "N/A",
+              "industry": self.industry
+            }
+                
+            for element in info:
+              text = element.text
+              if self._is_phone_number(text):
+                business["phone"] = text
+              elif self._is_availability(text):
+                business["availability"] = text
+              else:
+                business["address"] = text
+                
+            return business
+        except StaleElementReferenceException:
+          print("Stale element. Retrying...")
+          self.driver.refresh()
+          time.sleep(10)
+          self.cards = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".ykYNg > div[jscontroller]"))
+          )
+          card = self.cards[index]
+          continue
     return None
 
   def run(self):
@@ -118,6 +121,8 @@ class GetBusinessData:
 
         for i in range(len(self.cards)):
           business = self.get_business_data(self.cards[i], i)
+          if not business:
+            continue
           phone = business["phone"].replace(" ", "")
           key = f"{business['name']} - {phone}"
           if key not in self.unique_businesses:
@@ -153,4 +158,4 @@ class GetBusinessData:
 
 
 if __name__ == "__main__":
-  GetBusinessData().search_for_businesses("gyms near me")
+  GetBusinessData('matchoudi_businesses.csv').search_for_businesses("gyms")
