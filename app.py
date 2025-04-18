@@ -1,26 +1,24 @@
+from pathlib import Path
 from app_base import AppBase
 from split_data import SplitData
 from get_numbers import GetBusinessData
+from colorama import Fore, Style, init, Back
 
 class App():
   def __init__(self):
     self.__user_name = input("Enter your name: ")
     self.app_base = AppBase(self.__user_name)
-    # super().__init__(self.__user_name)
-    # self.unique_businesses = set()
-    # self.filename = f"{self.__user_name.lower()}_businesses.csv"
     self.scraper = GetBusinessData(self.app_base)
+    init()
     if self.__user_name.strip():
       self.run()
     else:
       print("Name cannot be empty. Please try again.")
       self
 
-  # def save_file_name(self):
-
 
   def welcome(self):
-    print(f"Welcome {self.__user_name} to the Business Finder App!\n")
+    print(Fore.BLUE + f"Welcome {self.__user_name} to the Business Finder App!\n" + Style.RESET_ALL)
     print("This app will help you find businesses based on your search query.\n")
     print("Let's get started!\n")
     self.app_options()
@@ -40,20 +38,27 @@ class App():
           case 1:
             query = input("Enter your search query: ")
             if not query.strip():
-              print("Query cannot be empty. Please try again.")
+              print(Fore.RED + "Query cannot be empty. Please try again." + Style.RESET_ALL)
               continue
             self.scraper.search_for_businesses(query)
             self.app_options()
           case 2:
-            SplitData().split_data()
+            file = input("Enter the filename: ").strip()
+            if not Path(file).exists():
+              print(Fore.RED + "Sorry we can't foud the file" + Style.RESET_ALL)
+              continue
+            spliter.laod_data(file)
             self.app_options()
           case 3:
-            print("Exiting...")
+            spliter.split_data()
+            self.app_options()
+          case 4:
+            print(Fore.GREEN + "Exiting..." + Style.RESET_ALL)
             break
           case _:
-            print("Invalid choice. Please try again.")
+            print(Fore.RED + "Invalid choice. Please try again." + Style.RESET_ALL)
       except ValueError:
-        print("Invalid choice. Please try again.")
+        print(Fore.RED + "Invalid choice. Please try again." + Style.RESET_ALL)
 
 
 if __name__ == "__main__":
