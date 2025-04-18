@@ -4,16 +4,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, NoSuchElementException
-from app_base import AppBase
+# from app_base import AppBase
 import time
 # import re
 from pathlib import Path
 import csv
 
-class GetBusinessData(AppBase):
-  def __init__(self):
+class GetBusinessData():
+  def __init__(self, app_base):
     self.driver = None
     self.businesses = []
+    self.app_base = app_base
     self.CHUNK_SIZE = 50
     self.industry = None
     self.cards = []
@@ -116,7 +117,7 @@ class GetBusinessData(AppBase):
           business = self.get_business_data(self.cards[i], i)
           if not business:
             continue
-          if self.add_to_unique(business["name"], business["phone"]):
+          if self.app_base.add_to_unique(business["name"], business["phone"]):
             self.businesses.append(business)
           # phone = business["phone"].strip()
           # key = f"{business['name']} - {phone}"
