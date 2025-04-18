@@ -24,7 +24,7 @@ class App():
     self.app_options()
 
   def app_options(self):
-    print("\nPlease choose from the following options:\n")
+    print(Fore.CYAN + "\nPlease choose from the following options:\n" + Style.RESET_ALL)
     print("1. Search for businesses")
     print("2. Load a file")
     print("3. Split data")
