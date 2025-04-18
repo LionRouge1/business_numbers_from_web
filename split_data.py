@@ -1,41 +1,37 @@
 import csv
-from pathlib import Path
 from colorama import Fore, Style, init, Back
-from app_base import AppBase
-import time
+# import time
 
-class SplitData(AppBase):
-  def __init__(self):
-    super()
+class SplitData():
+  def __init__(self, app_base):
+    self.app_base = app_base
     self.businesses = []
-    self.read_from_csv()
     init()
 
-  def read_from_csv(self):
-    with open(supself.filename, "r") as csvfile:
+  def read_from_csv(self, file = None):
+    n_file = file if file != None else self.app_base.filename
+    with open(n_file, "r") as csvfile:
       reader = csv.DictReader(csvfile)
       for row in reader:
-        if self.add_to_unique(row["Name"], row["Phone"]):
+        if self.app_base.add_to_unique(row["Name"], row["Phone"]):
           self.businesses.append(row)
-
-    print(self.businesses)
 
   def write_to_csv(self, filename, data):
     print(Fore.GREEN + f"Writing to {filename}..." + Style.RESET_ALL)
     try:
       with open(filename, "w", newline="", encoding='utf-8') as csvfile:
-          writer = csv.DictWriter(csvfile, fieldnames=["Name", "Address", "Phone", "Availability"])
-          writer.writeheader()
+        writer = csv.DictWriter(csvfile, fieldnames=["Name", "Address", "Phone", "Availability"])
+        writer.writeheader()
 
-          writer.writerows(
-              {
-                  "Name": biz["Name"],
-                  "Address": biz["Address"],
-                  "Phone": biz["Phone"],
-                  "Availability": biz["Availability"]
-              } 
-              for biz in data
-          )
+        writer.writerows(
+          {
+            "Name": biz["Name"],
+            "Address": biz["Address"],
+            "Phone": biz["Phone"],
+            "Availability": biz["Availability"]
+          } 
+          for biz in data
+        )
     except Exception as e:
       print(Fore.RED + "Error: " + str(e) + Style.RESET_ALL)
 
@@ -61,12 +57,16 @@ class SplitData(AppBase):
       self.write_to_csv(f"agent_{j+1}.csv", data)
       counter += i
 
+  def laod_data(self, file):
+    self.read_from_csv(file)
+
+
 if __name__ == "__main__":
   filename = input("Enter the filename to split: ").strip()
   if not filename:
     print(Fore.RED + "Filename cannot be empty. Please try again." + Style.RESET_ALL)
     exit()
-  splitter = SlitData(filename)
+  splitter = SplitData(filename)
   splitter.read_from_csv()
   splitter.split_data()
     
