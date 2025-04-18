@@ -1,12 +1,15 @@
-from get_numbers import GetBusinessData
+from app_base import AppBase
 from split_data import SplitData
+from get_numbers import GetBusinessData
 
-class App:
+class App(AppBase):
   def __init__(self):
-    self.user_name = input("Enter your name: ")
-    self.filename = f"{self.user_name.lower()}_businesses.csv"
-    self.scraper = GetBusinessData(self.filename)
-    if self.user_name.strip():
+    self.__user_name = input("Enter your name: ")
+    super().__init__(self.__user_name)
+    # self.unique_businesses = set()
+    # self.filename = f"{self.__user_name.lower()}_businesses.csv"
+    self.scraper = GetBusinessData()
+    if self.__user_name.strip():
       self.run()
     else:
       print("Name cannot be empty. Please try again.")
@@ -16,7 +19,7 @@ class App:
 
 
   def welcome(self):
-    print(f"Welcome {self.user_name} to the Business Finder App!\n")
+    print(f"Welcome {self.__user_name} to the Business Finder App!\n")
     print("This app will help you find businesses based on your search query.\n")
     print("Let's get started!\n")
     self.app_options()
@@ -41,7 +44,7 @@ class App:
             self.scraper.search_for_businesses(query)
             self.app_options()
           case 2:
-            SplitData(self.filename).split_data()
+            SplitData().split_data()
             self.app_options()
           case 3:
             print("Exiting...")
