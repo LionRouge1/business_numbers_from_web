@@ -2,13 +2,14 @@ from app_base import AppBase
 from split_data import SplitData
 from get_numbers import GetBusinessData
 
-class App(AppBase):
+class App():
   def __init__(self):
     self.__user_name = input("Enter your name: ")
-    super().__init__(self.__user_name)
+    self.app_base = AppBase(self.__user_name)
+    # super().__init__(self.__user_name)
     # self.unique_businesses = set()
     # self.filename = f"{self.__user_name.lower()}_businesses.csv"
-    self.scraper = GetBusinessData()
+    self.scraper = GetBusinessData(self.app_base)
     if self.__user_name.strip():
       self.run()
     else:
