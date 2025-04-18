@@ -117,11 +117,6 @@ class GetBusinessData():
             continue
           if self.app_base.add_to_unique(business["name"], business["phone"]):
             self.businesses.append(business)
-          # phone = business["phone"].strip()
-          # key = f"{business['name']} - {phone}"
-          # if key not in self.unique_businesses:
-          #   self.unique_businesses.add(key)
-          #   self.businesses.append(business)
         
         if len(self.businesses) >= self.CHUNK_SIZE:
           self.write_to_csv()
