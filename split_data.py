@@ -1,20 +1,24 @@
 import csv
 from pathlib import Path
 from colorama import Fore, Style, init, Back
+from app_base import AppBase
 import time
 
-class SplitData:
-  def __init__(self, filename):
-    self.filename = filename
+class SplitData(AppBase):
+  def __init__(self):
+    super()
     self.businesses = []
     self.read_from_csv()
     init()
 
   def read_from_csv(self):
-    with open(self.filename, "r") as csvfile:
+    with open(supself.filename, "r") as csvfile:
       reader = csv.DictReader(csvfile)
       for row in reader:
-        self.businesses.append(row)
+        if self.add_to_unique(row["Name"], row["Phone"]):
+          self.businesses.append(row)
+
+    print(self.businesses)
 
   def write_to_csv(self, filename, data):
     print(Fore.GREEN + f"Writing to {filename}..." + Style.RESET_ALL)

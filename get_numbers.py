@@ -4,26 +4,19 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, NoSuchElementException
+from app_base import AppBase
 import time
 # import re
 from pathlib import Path
 import csv
 
-class GetBusinessData:
-  def __init__(self,filename):
-    # self.driver = webdriver.Chrome()
-    # self.chrome_options = Options()
-    # self.chrome_options.add_argument("--headless=new")
-    # self.chrome_options.add_argument("--disable-gpu")
-    # self.chrome_options.add_argument("--window-size=1920,1080")
+class GetBusinessData(AppBase):
+  def __init__(self):
     self.driver = None
     self.businesses = []
-    self.unique_businesses = set()
     self.CHUNK_SIZE = 50
     self.industry = None
     self.cards = []
-    # self.timestamp = time.strftime("%Y%m%d")
-    self.filename = filename
 
   def _is_phone_number(self, s):
     return s.replace(" ", "").isdigit()
@@ -123,11 +116,13 @@ class GetBusinessData:
           business = self.get_business_data(self.cards[i], i)
           if not business:
             continue
-          phone = business["phone"].replace(" ", "")
-          key = f"{business['name']} - {phone}"
-          if key not in self.unique_businesses:
-            self.unique_businesses.add(key)
+          if self.add_to_unique(business["name"], business["phone"]):
             self.businesses.append(business)
+          # phone = business["phone"].strip()
+          # key = f"{business['name']} - {phone}"
+          # if key not in self.unique_businesses:
+          #   self.unique_businesses.add(key)
+          #   self.businesses.append(business)
         
         if len(self.businesses) >= self.CHUNK_SIZE:
           self.write_to_csv()
