@@ -26,11 +26,13 @@ class App():
   def app_options(self):
     print("\nPlease choose from the following options:\n")
     print("1. Search for businesses")
-    print("2. Split data")
-    print("3. Exit\n")
+    print("2. Load a file")
+    print("3. Split data")
+    print("4. Exit\n")
 
   def run(self):
     self.welcome()
+    spliter = SplitData(self.app_base)
     while True:
       try:
         choice = int(input("Enter your choice: "))
