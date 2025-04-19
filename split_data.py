@@ -1,11 +1,11 @@
 import csv
 from colorama import Fore, Style, init, Back
-# import time
 
 class SplitData():
   def __init__(self, app_base):
     self.app_base = app_base
     self.businesses = []
+    self.categories = {}
     init()
 
   def read_from_csv(self, file = None):
@@ -59,6 +59,14 @@ class SplitData():
 
   def laod_data(self, file):
     self.read_from_csv(file)
+    print(Fore.GREEN + "All businesses has been loaded" + Style.RESET_ALL)
+
+  def sort_by_category(self):
+    for biz in self.businesses:
+      if biz['Industry'] in self.categories:
+        self.categories[biz['Industry']].append(biz)
+      else:
+        self.categories[biz['Industry']] = [biz]
 
 
 if __name__ == "__main__":
