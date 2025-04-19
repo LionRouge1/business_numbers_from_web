@@ -28,7 +28,8 @@ class App():
     print("1. Search for businesses")
     print("2. Load a file")
     print("3. Split data")
-    print("4. Exit\n")
+    print("4. Categorize the data")
+    print("5. Exit\n")
 
   def run(self):
     self.welcome()
@@ -54,7 +55,11 @@ class App():
           case 3:
             spliter.split_data()
             self.app_options()
+
           case 4:
+            spliter.sort_by_category()
+            self.app_options()
+          case 5:
             print(Fore.GREEN + "Exiting..." + Style.RESET_ALL)
             break
           case _:
