@@ -48,7 +48,7 @@ class App():
             self.app_options()
           case 2:
             file = input("Enter the filename: ").strip()
-            if not Path(file).exists():
+            if not Path(file).exists() and not file.endswith(".csv") and not file:
               print(Fore.RED + "Sorry we can't foud the file" + Style.RESET_ALL)
               continue
             spliter.laod_data(file)
