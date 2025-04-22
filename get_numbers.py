@@ -48,8 +48,8 @@ class GetBusinessData():
   
   def write_to_csv(self):
     print(Fore.GREEN + "Writing to CSV..." + Style.RESET_ALL)
-    file_exists = Path(self.filename).exists()
-    with open(self.filename, "a", newline="", encoding='utf-8') as csvfile:
+    file_exists = Path(self.app_base.filename).exists()
+    with open(self.app_base.filename, "a", newline="", encoding='utf-8') as csvfile:
       fieldnames = ["Name", "Address", "Phone", "Availability", "Industry"]
       writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
