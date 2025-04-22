@@ -29,7 +29,8 @@ class App():
     print("2. Load a file")
     print("3. Split data")
     print("4. Categorize the data")
-    print("5. Exit\n")
+    print("5. Remove duplicates businesses")
+    print("6. Exit\n")
 
   def run(self):
     self.welcome()
