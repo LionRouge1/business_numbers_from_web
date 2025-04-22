@@ -39,7 +39,7 @@ class GetBusinessData():
         EC.presence_of_element_located((By.CSS_SELECTOR, "form[jsname='jZGSjc']"))
       )
       search_input = search_form.find_element(By.CSS_SELECTOR, "input[name='q']")
-      search_input.send_keys(f"{keys} near me")
+      search_input.send_keys(f"{keys} in Ghana")
       search_form.submit()
       self.run()
     except Exception as e:
