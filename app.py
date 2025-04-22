@@ -60,7 +60,13 @@ class App():
           case 4:
             spliter.sort_by_category()
             self.app_options()
+
           case 5:
+            spliter.write_unique_businesses()
+            print(Fore.GREEN + "Unique businesses have been written to unique_businesses.csv" + Style.RESET_ALL)
+            self.app_options()
+
+          case 6:
             print(Fore.GREEN + "Exiting..." + Style.RESET_ALL)
             break
           case _:
