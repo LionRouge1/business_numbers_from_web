@@ -68,6 +68,13 @@ class SplitData():
       else:
         self.categories[biz['Industry']] = [biz]
 
+  def write_unique_businesses(self):
+    try:
+      filename = "unique_businesses.csv"
+      self.write_to_csv(filename, self.businesses)
+    except Exception as e:
+      print(Fore.RED + "Error: " + str(e) + Style.RESET_ALL)
+
 
 if __name__ == "__main__":
   filename = input("Enter the filename to split: ").strip()
