@@ -41,13 +41,10 @@ class GetBusinessData():
       search_input = search_form.find_element(By.CSS_SELECTOR, "input[name='q']")
       search_input.send_keys(f"{keys} in Ghana")
       search_form.submit()
-      if website:
-        callback = self.get_business_with_website
-        self.run(callback)
-      else:
-        callback = self.get_business_with_no_website
-        self.run(callback)
-      # self.run()
+
+      callback = self.get_business_with_website if website else self.get_business_with_no_website
+      self.run(callback)
+
     except Exception as e:
       print(Fore.RED + "Error: " + str(e) + Style.RESET_ALL)
       self.driver.quit()
@@ -183,7 +180,6 @@ class GetBusinessData():
       except Exception as e:
         self.write_to_csv()
         print(Fore.RED + "Error: " + str(e) + Style.RESET_ALL)
-        # self.driver.quit()
         break
 
     self.driver.quit()
