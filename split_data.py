@@ -68,6 +68,13 @@ class SplitData():
       else:
         self.categories[biz['Industry']] = [biz]
 
+  def empty_businesses(self):
+    if not self.businesses:
+      print(Fore.RED + "No businesses found. Please run the scraper first." + Style.RESET_ALL)
+    
+    self.businesses = []
+    self.categories = {}
+
   def write_unique_businesses(self):
     try:
       filename = "unique_businesses.csv"
