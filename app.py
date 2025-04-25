@@ -1,7 +1,7 @@
 from pathlib import Path
 from app_base import AppBase
-from split_data import SplitData
-from get_numbers import GetBusinessData
+from data_splitter import SplitData
+from business_scraper import GetBusinessData
 from colorama import Fore, Style, init, Back
 
 class App():
@@ -57,6 +57,7 @@ class App():
               continue
             self.scraper.search_for_businesses(query, website=True)
             self.app_options()
+
           case 3:
             file = input("Enter the filename: ").strip()
             if not Path(file).exists() and not file.endswith(".csv") and not file:
@@ -64,6 +65,7 @@ class App():
               continue
             spliter.laod_data(file)
             self.app_options()
+
           case 4:
             spliter.split_data()
             self.app_options()
