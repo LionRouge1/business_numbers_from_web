@@ -28,7 +28,7 @@ class GetBusinessData():
         return True
     return False
   
-  def search_for_businesses(self, keys=None):
+  def search_for_businesses(self, keys=None, website=False):
     print(Fore.GREEN + "Opening Chrome..." + Style.RESET_ALL)
     self.industry = keys
     self.driver = webdriver.Chrome()
@@ -41,7 +41,13 @@ class GetBusinessData():
       search_input = search_form.find_element(By.CSS_SELECTOR, "input[name='q']")
       search_input.send_keys(f"{keys} in Ghana")
       search_form.submit()
-      self.run()
+      if website:
+        callback = self.get_business_with_website
+        self.run(callback)
+      else:
+        callback = self.get_business_with_no_website
+        self.run(callback)
+      # self.run()
     except Exception as e:
       print(Fore.RED + "Error: " + str(e) + Style.RESET_ALL)
       self.driver.quit()
