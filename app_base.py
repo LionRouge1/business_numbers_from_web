@@ -6,7 +6,8 @@ class AppBase:
 
   def add_to_unique(self, name, phone):
     key = f"{name.strip()} - {phone.strip()}"
-    if key not in self.unique_businesses:
-      self.unique_businesses.add(key)
-      return True
-    return False
+    if key in self.unique_businesses:
+      return False
+    
+    self.unique_businesses.add(key)
+    return True
